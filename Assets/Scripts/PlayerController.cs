@@ -11,14 +11,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (GetButtonDown(KeyCode.A))
-        //{
+    
 
-        //    //player.transform.position(new Vector3 );
-        //}
-        //if (GetButtonDown(KeyCode.D))
-        //{
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+    
+            
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
 
-        //}
+        }
     }
 }

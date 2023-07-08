@@ -8,12 +8,15 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
     private bool isJumping = false;
+    private bool isTouchingWall = false;
+    private GameObject currentCube;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>(); // Rigidbody bileþenini al
-        rb.constraints = RigidbodyConstraints.FreezeRotation; // Sadece yatay düzlemde dönmesine izin ver
+        rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation; // rotasyonu dondur
         rb.useGravity = false; // Baþlangýçta yerçekimini devre dýþý býrak
+       
     }
 
     private void Update()
@@ -30,7 +33,14 @@ public class PlayerMovement : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal"); // Yatay (a/d) giriþi al
 
         Vector3 movement = new Vector3(moveHorizontal, 0f, 0f); // Hareket vektörünü oluþtur
-        rb.velocity = new Vector3(movement.x * speed, rb.velocity.y, movement.z * speed); // Hareketi uygula
+
+        // Küp hareketi
+        
+
+        if (!isTouchingWall)
+        {
+            rb.velocity = new Vector3(movement.x * speed, rb.velocity.y, 0f); // Hareketi uygula
+        }
 
         // Yerçekimi ölçeðini uygula
         Vector3 gravity = gravityScale * Physics.gravity;
@@ -42,6 +52,17 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground")) // Oyuncu zemine temas ettiðinde
         {
             isJumping = false;
+            isTouchingWall = false;
+        }
+        else if (collision.gameObject.CompareTag("Wall")) // Duvara temas ettiðinde
+        {
+            isTouchingWall = true;
+        }
+        else if (collision.gameObject.CompareTag("MoveableCube"))
+        {
+            currentCube = collision.gameObject;
         }
     }
+
+    
 }

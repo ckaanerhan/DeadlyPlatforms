@@ -7,7 +7,7 @@ TagManager:
   - Ground
   - Wall
   - HelperCube
-  - MoveableCube
+  - FinishCube
   layers:
   - Default
   - TransparentFX

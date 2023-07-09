@@ -58,10 +58,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isTouchingWall = true;
         }
-        else if (collision.gameObject.CompareTag("MoveableCube"))
-        {
-            currentCube = collision.gameObject;
-        }
+      
     }
 
     

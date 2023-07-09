@@ -11,12 +11,26 @@ public class PlayerMovement : MonoBehaviour
     private bool isTouchingWall = false;
     private GameObject currentCube;
 
+    private int jumpCount = 0;
+    private MeshRenderer cubeRenderer;
+    private Material originalMaterial;
+    private Material yellowMaterial;
+
+
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>(); // Rigidbody bileþenini al
         rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation; // rotasyonu dondur
         rb.useGravity = false; // Baþlangýçta yerçekimini devre dýþý býrak
-       
+
+        cubeRenderer = GetComponentInChildren<MeshRenderer>();
+        originalMaterial = cubeRenderer.material;
+
+        // Sarý renkteki malzemeyi oluþturun
+        yellowMaterial = new Material(originalMaterial);
+        yellowMaterial.color = Color.yellow;
+
     }
 
     private void Update()
@@ -25,7 +39,17 @@ public class PlayerMovement : MonoBehaviour
         {
             isJumping = true;
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // Yukarý doðru zýplama kuvveti uygula
+            jumpCount++;
         }
+        if (jumpCount > 0)
+        {
+            cubeRenderer.material = yellowMaterial;
+        }
+        else
+        {
+            cubeRenderer.material = originalMaterial;
+        }
+
     }
 
     private void FixedUpdate()
@@ -53,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isJumping = false;
             isTouchingWall = false;
+            jumpCount = 0;
         }
         else if (collision.gameObject.CompareTag("Wall")) // Duvara temas ettiðinde
         {

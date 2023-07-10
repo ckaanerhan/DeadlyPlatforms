@@ -8,6 +8,11 @@ TagManager:
   - Wall
   - HelperCube
   - FinishCube
+  - Play
+  - Musics
+  - Credits
+  - Quit
+  - Menu
   layers:
   - Default
   - TransparentFX

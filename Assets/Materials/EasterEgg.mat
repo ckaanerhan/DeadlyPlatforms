@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: wall
+  m_Name: EasterEgg
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ValidKeywords:
   - _EMISSION
@@ -76,6 +76,6 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.8679245, g: 0.16600436, b: 0.12691349, a: 1}
-    - _EmissionColor: {r: 0.39607844, g: 0.11635124, b: 0.10196078, a: 1}
+    - _Color: {r: 0.8490566, g: 0.62105006, b: 0.27634388, a: 1}
+    - _EmissionColor: {r: 0.9716981, g: 0.5107374, b: 0.114587024, a: 1}
   m_BuildTextureStacks: []

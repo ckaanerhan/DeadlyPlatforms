@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -15,6 +16,22 @@ public class PlayerMovement : MonoBehaviour
     private Material originalMaterial;
     private Material yellowMaterial;
 
+    private string currentLevel = ""; // Mevcut seviye
+    private int levelBase = 1; // Baþlangýç seviye sayýsý
+
+    private int levelNumber = 1; // Mevcut seviye numarasý
+
+    public int GetLevelNumber()
+    {
+        return levelNumber;
+    }
+
+    public void SetLevelNumber(int level)
+    {
+        levelNumber = level;
+    }
+
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>(); // Rigidbody bileþenini al
@@ -27,6 +44,24 @@ public class PlayerMovement : MonoBehaviour
         // Sarý renkteki malzemeyi oluþturun
         yellowMaterial = new Material(originalMaterial);
         yellowMaterial.color = Color.yellow;
+
+        // "LevelX" adýndaki game objelerin sayýsýný alarak levelBase'i güncelle
+        int levelCount = GameObject.FindGameObjectsWithTag("LevelCube").Length;
+        levelBase = levelCount + 1; // Toplam seviye sayýsýna 1 ekleyerek levelBase'i güncelle
+
+        // Kayýtlý seviye ilerlemesini kontrol et
+        if (PlayerPrefs.HasKey("CurrentLevel"))
+        {
+            string savedLevel = PlayerPrefs.GetString("CurrentLevel");
+            if (int.TryParse(savedLevel.Substring(5), out int savedLevelNumber))
+            {
+                levelBase = savedLevelNumber + 1; // Kayýtlý seviye numarasýna 1 ekleyerek levelBase'i güncelle
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetString("CurrentLevel", "Level1");
+        }
     }
 
     private void Update()
@@ -45,6 +80,11 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             cubeRenderer.material = originalMaterial;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape)) // Esc tuþuna basýldýðýnda
+        {
+            SceneManager.LoadScene("LevelSelectionScene"); // Seviye seçim sahnesine geçiþ yap
         }
     }
 
@@ -77,5 +117,32 @@ public class PlayerMovement : MonoBehaviour
             gravityScale *= -1f; // Yerçekimini ters çevir
             jumpForce *= -1f;
         }
+        else if (other.CompareTag("LevelCube")) // Seviye küpüne deðdiðinde
+        {
+            string levelName = other.gameObject.name; // Küpün ismini al
+            int levelNumber;
+            if (int.TryParse(levelName.Substring(5), out levelNumber)) // Level numarasýný çýkar
+            {
+                string targetLevel = "Level" + levelNumber;
+
+                if (levelNumber <= levelBase)
+                {
+                    currentLevel = targetLevel; // Mevcut seviyeyi güncelle
+                    SceneManager.LoadScene(targetLevel); // Ýlgili leveli yükle
+                }
+            }
+        }
+
+
+
+
+
+    }
+
+    private void OnDestroy()
+    {
+        // Mevcut seviyeyi kaydet
+        string currentLevelName = SceneManager.GetActiveScene().name;
+        PlayerPrefs.SetString("CurrentLevel", currentLevelName);
     }
 }

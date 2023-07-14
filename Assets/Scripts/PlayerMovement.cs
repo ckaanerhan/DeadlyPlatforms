@@ -8,15 +8,12 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
     private bool isJumping = false;
-    private bool isTouchingWall = false;
     private GameObject currentCube;
 
     private int jumpCount = 0;
     private MeshRenderer cubeRenderer;
     private Material originalMaterial;
     private Material yellowMaterial;
-
-
 
     private void Start()
     {
@@ -30,7 +27,6 @@ public class PlayerMovement : MonoBehaviour
         // Sarý renkteki malzemeyi oluþturun
         yellowMaterial = new Material(originalMaterial);
         yellowMaterial.color = Color.yellow;
-
     }
 
     private void Update()
@@ -41,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // Yukarý doðru zýplama kuvveti uygula
             jumpCount++;
         }
+
         if (jumpCount > 0)
         {
             cubeRenderer.material = yellowMaterial;
@@ -49,7 +46,6 @@ public class PlayerMovement : MonoBehaviour
         {
             cubeRenderer.material = originalMaterial;
         }
-
     }
 
     private void FixedUpdate()
@@ -58,13 +54,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 movement = new Vector3(moveHorizontal, 0f, 0f); // Hareket vektörünü oluþtur
 
-        // Küp hareketi
-        
-
-        if (!isTouchingWall)
-        {
-            rb.velocity = new Vector3(movement.x * speed, rb.velocity.y, 0f); // Hareketi uygula
-        }
+        rb.velocity = new Vector3(movement.x * speed, rb.velocity.y, 0f); // Hareketi uygula
 
         // Yerçekimi ölçeðini uygula
         Vector3 gravity = gravityScale * Physics.gravity;
@@ -76,15 +66,16 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground")) // Oyuncu zemine temas ettiðinde
         {
             isJumping = false;
-            isTouchingWall = false;
             jumpCount = 0;
         }
-        else if (collision.gameObject.CompareTag("Wall")) // Duvara temas ettiðinde
-        {
-            isTouchingWall = true;
-        }
-      
     }
 
-    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("GravityR")) // Yerçekimi deðiþtirme alanýna girdiðinde
+        {
+            gravityScale *= -1f; // Yerçekimini ters çevir
+            jumpForce *= -1f;
+        }
+    }
 }

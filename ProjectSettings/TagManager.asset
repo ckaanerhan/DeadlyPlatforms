@@ -13,6 +13,7 @@ TagManager:
   - Credits
   - Quit
   - Menu
+  - GravityR
   layers:
   - Default
   - TransparentFX

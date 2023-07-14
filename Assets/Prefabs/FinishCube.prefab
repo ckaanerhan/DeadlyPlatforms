@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3389188513029324858}
   - component: {fileID: 3389188513029324837}
   - component: {fileID: 3389188513029324857}
+  - component: {fileID: 380875078848395563}
   m_Layer: 0
   m_Name: FinishCube
   m_TagString: FinishCube
@@ -108,5 +109,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 554d1498ed8dea547a6134a546ac6e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &380875078848395563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3389188513029324836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efa7c0de873ab5c42a1aa3f9076d837c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

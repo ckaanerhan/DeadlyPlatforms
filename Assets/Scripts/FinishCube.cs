@@ -4,9 +4,14 @@ public class FinishCube : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        LevelManager levelManager = FindObjectOfType<LevelManager>();
+        if (levelManager != null)
         {
-            LevelManager.Instance.LoadNextLevel();
+            levelManager.LoadNextLevel();
+        }
+        else
+        {
+            Debug.LogError("LevelManager not found.");
         }
     }
 }

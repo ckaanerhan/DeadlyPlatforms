@@ -27,6 +27,7 @@ public class SlowMotionTrigger : MonoBehaviour
                 particleMain.stopAction = ParticleSystemStopAction.Callback;
                 particleMain.loop = false;
                 particleEffect.Stop();
+                Destroy(particleEffect.gameObject, 2f); // 2 saniye sonra particle efektini yok et
             }
         }
     }

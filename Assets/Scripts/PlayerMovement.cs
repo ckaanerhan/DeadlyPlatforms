@@ -10,23 +10,12 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private bool isJumping = false;
     private GameObject currentCube;
-    public static PlayerMovement instance; // Singleton örneði
+
     private int jumpCount = 0;
     private MeshRenderer cubeRenderer;
-    private Material originalMaterial;
-    private Material yellowMaterial;
+    public Material originalMaterial;
+    public Material yellowMaterial;
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this; // Bu örneði singleton olarak ayarla
-        }
-        else
-        {
-            Destroy(gameObject); // Birden fazla örnek oluþmasýný engelle
-        }
-    }
 
     private void Start()
     {
@@ -35,11 +24,7 @@ public class PlayerMovement : MonoBehaviour
         rb.useGravity = false; // Baþlangýçta yerçekimini devre dýþý býrak
 
         cubeRenderer = GetComponentInChildren<MeshRenderer>();
-        originalMaterial = cubeRenderer.material;
-
-        // Sarý renkteki malzemeyi oluþturun
-        yellowMaterial = new Material(originalMaterial);
-        yellowMaterial.color = Color.yellow;
+        cubeRenderer.material = originalMaterial;
     }
 
     private void Update()
@@ -60,10 +45,10 @@ public class PlayerMovement : MonoBehaviour
             cubeRenderer.material = originalMaterial;
         }
 
-        //if (Input.GetKeyDown(KeyCode.Escape)) // Esc tuþuna basýldýðýnda
-        //{
-        //    SceneManager.LoadScene("LevelSelectionScene"); // Seviye seçim sahnesine geçiþ yap
-        //}
+        if (Input.GetKeyDown(KeyCode.Escape)) // Esc tuþuna basýldýðýnda
+        {
+            SceneManager.LoadScene("LevelSelectionScene"); // Seviye seçim sahnesine geçiþ yap
+        }
     }
 
     private void FixedUpdate()
@@ -85,15 +70,28 @@ public class PlayerMovement : MonoBehaviour
         {
             isJumping = false;
             jumpCount = 0;
+            cubeRenderer.material = originalMaterial; // Zýplama bittiðinde malzemeyi eski haline getir
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("GravityR")) // Yerçekimi deðiþtirme alanýna girdiðinde
+        if (other.CompareTag("GravityRUp") && gravityScale > 0) // Yerçekimi deðiþtirme alanýna girdiðinde
         {
             gravityScale *= -1f; // Yerçekimini ters çevir
             jumpForce *= -1f;
+        }
+        else if (other.CompareTag("GravityRDown") && gravityScale < 0) // Yerçekimi deðiþtirme alanýna girdiðinde
+        {
+            gravityScale *= -1f; // Yerçekimini ters çevir
+            jumpForce *= -1f;
+        }
+        else if (other.CompareTag("LevelCube")) // Seviye küpüne deðdiðinde
+        {
+            string levelName = other.gameObject.name; // Küpün ismini al
+            int levelNumber = int.Parse(levelName.Substring(5)); // Level numarasýný al
+
+            SceneManager.LoadScene("Level" + levelNumber); // Ýlgili leveli yükle
         }
     }
 }

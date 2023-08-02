@@ -17,6 +17,7 @@ TagManager:
   - LevelCube
   - GravityRUp
   - GravityRDown
+  - ResetCube
   layers:
   - Default
   - TransparentFX

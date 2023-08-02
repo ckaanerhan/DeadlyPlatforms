@@ -214,7 +214,7 @@ Material:
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 0
     - _MaterialID: 1
-    - _Metallic: 0.758
+    - _Metallic: 0.81
     - _MetallicRemapMax: 0.87273276
     - _MetallicRemapMin: 0
     - _Mode: 0
@@ -232,7 +232,7 @@ Material:
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
-    - _Smoothness: 0.159
+    - _Smoothness: 0.427
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
     - _SmoothnessTextureChannel: 0
@@ -267,20 +267,20 @@ Material:
     - _UVDetail: 0
     - _UVEmissive: 0
     - _UVSec: 0
-    - _UseEmissiveIntensity: 1
+    - _UseEmissiveIntensity: 0
     - _UseShadowThreshold: 0
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.9811321, g: 0.805811, b: 0.09718761, a: 1}
+    - _BaseColor: {r: 1, g: 0.80660385, b: 0.033018887, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.9811321, g: 0.805811, b: 0.097187586, a: 1}
+    - _Color: {r: 1, g: 0.80660385, b: 0.033018887, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissiveColor: {r: 6135.9683, g: 4690.3213, b: 0, a: 8192}
+    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 8192}
     - _EmissiveColorLDR: {r: 0.88031507, g: 0.7812595, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}

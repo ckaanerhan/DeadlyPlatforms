@@ -13,19 +13,32 @@ public class PlayerMovement : MonoBehaviour
 
     private int jumpCount = 0;
     private MeshRenderer cubeRenderer;
-    public Material originalMaterial;
-    public Material yellowMaterial;
+    private Material originalMaterial;
+    private Material yellowMaterial;
+
+    public int LevelNumber;
+
+    public int maxLevelUnlocked;
+
+    private int currentLevelIndex; // Þu anki seviyenin indeksi
+    private string currentLevelName; // Þu anki seviyenin adý
 
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>(); // Rigidbody bileþenini al
-        rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation; // rotasyonu dondur
-        rb.useGravity = false; // Baþlangýçta yerçekimini devre dýþý býrak
+        rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        rb.useGravity = false;
 
         cubeRenderer = GetComponentInChildren<MeshRenderer>();
-        cubeRenderer.material = originalMaterial;
+        originalMaterial = cubeRenderer.material;
+        yellowMaterial = new Material(originalMaterial);
+        yellowMaterial.color = Color.yellow;
+
+
+
     }
+
 
     private void Update()
     {
@@ -47,7 +60,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape)) // Esc tuþuna basýldýðýnda
         {
-            SceneManager.LoadScene("LevelSelectionScene"); // Seviye seçim sahnesine geçiþ yap
+
+            SceneManager.LoadScene("LevelSelectionScene");
         }
     }
 
@@ -88,10 +102,64 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (other.CompareTag("LevelCube")) // Seviye küpüne deðdiðinde
         {
-            string levelName = other.gameObject.name; // Küpün ismini al
-            int levelNumber = int.Parse(levelName.Substring(5)); // Level numarasýný al
+            LevelCube levelCube = other.gameObject.GetComponent<LevelCube>();
+            if (levelCube != null)
+            {
+                int levelNumber = levelCube.LevelNumber;
 
-            SceneManager.LoadScene("Level" + levelNumber); // Ýlgili leveli yükle
+                // Seviye numarasýný kaydet
+                LevelNumber = levelNumber;
+                PlayerPrefs.SetInt("LevelNumber", levelNumber);
+
+                // Seviye küpüne deðdiðimizde sahneyi yükle
+                SceneManager.LoadScene("Level" + levelNumber);
+            }
+        }
+
+        if (other.CompareTag("FinishCube")) // FinishCube tag'ine sahip bir nesneye deðdiðinde
+        {
+            
+            if (int.TryParse(other.gameObject.name, out LevelNumber)) // Nesnenin isminden sayýyý al ve dönüþtür
+            {
+                Debug.Log("LevelNumber integer dönüþtürüldü");
+                if (LevelNumber > maxLevelUnlocked)
+                {
+                    maxLevelUnlocked = LevelNumber;
+
+                    // Yeni en yüksek seviye numarasýný PlayerPrefs'e kaydedelim.
+                    PlayerPrefs.SetInt("MaxLevelUnlocked", maxLevelUnlocked);
+                }
+            }
+        }
+
+        if (other.CompareTag("ResetCube")) 
+        {
+            maxLevelUnlocked = 0;
+            Debug.Log("hit");
         }
     }
+
+
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Þu anki seviyenin adýný ve indeksini güncelle
+        currentLevelName = SceneManager.GetActiveScene().name;
+        currentLevelIndex = SceneManager.GetActiveScene().buildIndex;
+
+        // Max level unlocked deðerini güncelle
+        maxLevelUnlocked = PlayerPrefs.GetInt("MaxLevelUnlocked", 1);
+    }
+
+
 }
